@@ -1,5 +1,5 @@
 var omit = require("lodash").omit;
-var Package = require("../models/package");
+var Package = require("../agents/package");
 
 module.exports = function(request, reply) {
 
