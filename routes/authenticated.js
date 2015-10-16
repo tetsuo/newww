@@ -135,6 +135,7 @@ module.exports = [
       }
       if (invalidUserName(request.query.orgScope)) {
         var err = new Error("Org Scope must be a valid entry");
+        request.logger.error(err);
         return reply.view("errors/internal", err);
       }
       return reply.view('org/transfer', {
@@ -148,6 +149,18 @@ module.exports = [
     handler: function(request, reply) {
       if (!request.features.org_billing) {
         return reply.redirect('/org');
+      }
+
+      if (invalidUserName(request.query.orgScope)) {
+        var err = new Error("Org Scope must be a valid entry");
+        request.logger.error(err);
+        return reply.view("errors/internal", err);
+      }
+
+      if (invalidUserName(request.query['new-user'])) {
+        var err = new Error("User name must be valid");
+        request.logger.error(err);
+        return reply.view("errors/internal", err);
       }
 
       return reply.view('org/billing', {
