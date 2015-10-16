@@ -230,7 +230,7 @@ customer.subscribe = function(request, reply) {
         var err = new Error("User name must be valid");
         request.logger.error(err);
         return request.saveNotifications([
-          Promise.reject(err.message)
+          P.reject(err.message)
         ]).then(function(token) {
           var url = '/org/transfer-user-name';
           var param = token ? "?notice=" + token : "";
