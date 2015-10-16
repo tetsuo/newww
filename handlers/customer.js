@@ -6,6 +6,7 @@ var Customer = require('../models/customer');
 var P = require('bluebird');
 var utils = require('../lib/utils');
 var validate = require('validate-npm-package-name');
+var invalidUserName = require('npm-user-validate').username;
 
 customer.getBillingInfo = function(request, reply) {
 

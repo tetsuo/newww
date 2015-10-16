@@ -458,6 +458,26 @@ describe('transferring username to org', function() {
       });
     });
   });
+
+  it('responds in an invalid manner for ', function(done) {
+    generateCrumb(server, function(crumb) {
+      var userMock = nock("https://user-api-example.com")
+        .get("/user/bob")
+        .reply(200, fixtures.users.bob);
+
+      var options = {
+        url: "/org/create/billing?orgScope=org-915001&fullname=Bob%27s%20Org%20Is%20Cool&new-user=bigco",
+        method: "GET",
+        credentials: fixtures.users.bob
+      };
+
+      server.inject(options, function(resp) {
+        userMock.done();
+        expect(resp.statusCode).to.equal(200);
+        done();
+      });
+    });
+  });
 });
 
 describe('updating an org', function() {
