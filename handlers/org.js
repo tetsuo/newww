@@ -305,6 +305,19 @@ exports.validateOrgCreation = function(request, reply) {
         });
       }
 
+      if (invalidUserName(planData.orgScope)) {
+        var err = new Error("Org Scope must be valid name");
+        return request.saveNotifications([
+          Promise.reject(err.message)
+        ]).then(function(token) {
+          var url = '/org/create';
+          var param = token ? "?notice=" + token : "";
+
+          url = url + param;
+          return reply.redirect(url);
+        });
+      }
+
       if (planData.orgScope === loggedInUser) {
         return reportScopeInUseError({
           inUseByMe: true,
