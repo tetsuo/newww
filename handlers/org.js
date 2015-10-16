@@ -356,6 +356,8 @@ exports.getOrgCreationBillingPage = function(request, reply) {
     return reply.redirect('/org');
   }
 
+  var newUser = request.query['new-user'];
+
   if (invalidUserName(request.query.orgScope)) {
     var err = new Error("Org Scope must be a valid entry");
     request.logger.error(err);
@@ -369,7 +371,7 @@ exports.getOrgCreationBillingPage = function(request, reply) {
     });
   }
 
-  if (invalidUserName(request.query['new-user'])) {
+  if (newUser && invalidUserName(newUser)) {
     var err = new Error("User name must be valid");
     request.logger.error(err);
     return request.saveNotifications([
