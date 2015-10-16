@@ -146,33 +146,6 @@ module.exports = [
   }, {
     path: "/org/create/billing",
     method: "GET",
-    handler: function(request, reply) {
-      if (!request.features.org_billing) {
-        return reply.redirect('/org');
-      }
-
-      if (invalidUserName(request.query.orgScope)) {
-        var err = new Error("Org Scope must be a valid entry");
-        request.logger.error(err);
-        return reply.view("errors/internal", err);
-      }
-
-      if (invalidUserName(request.query['new-user'])) {
-        var err = new Error("User name must be valid");
-        request.logger.error(err);
-        return reply.view("errors/internal", err);
-      }
-
-      return reply.view('org/billing', {
-        fullname: request.query.fullname,
-        orgScope: request.query.orgScope,
-        newUser: request.query['new-user'],
-        stripePublicKey: process.env.STRIPE_PUBLIC_KEY
-
-      });
-
-
-
-    }
+    handler: require('../handlers/org').getOrgCreationBillingPage
   }
 ];

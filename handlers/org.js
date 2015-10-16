@@ -337,3 +337,47 @@ exports.validateOrgCreation = function(request, reply) {
     }
   });
 };
+
+exports.getOrgCreationBillingPage = function(request, reply) {
+  if (!request.features.org_billing) {
+    return reply.redirect('/org');
+  }
+
+  if (invalidUserName(request.query.orgScope)) {
+    var err = new Error("Org Scope must be a valid entry");
+    request.logger.error(err);
+    return request.saveNotifications([
+      Promise.reject(err.message)
+    ]).then(function(token) {
+      var url = '/org/create';
+      var param = token ? "?notice=" + token : "";
+      url = url + param;
+      return reply.redirect(url);
+    });
+  }
+
+  if (invalidUserName(request.query['new-user'])) {
+    var err = new Error("User name must be valid");
+    request.logger.error(err);
+    return request.saveNotifications([
+      Promise.reject(err.message)
+    ]).then(function(token) {
+      var url = '/org/transfer';
+      var param = token ? "?notice=" + token : "";
+      param = param + "&orgScope=" + request.query.orgScope;
+      url = url + param;
+      return reply.redirect(url);
+    });
+  }
+
+  return reply.view('org/billing', {
+    fullname: request.query.fullname,
+    orgScope: request.query.orgScope,
+    newUser: request.query['new-user'],
+    stripePublicKey: process.env.STRIPE_PUBLIC_KEY
+
+  });
+
+
+
+};
