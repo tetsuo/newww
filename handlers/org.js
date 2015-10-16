@@ -362,7 +362,7 @@ exports.getOrgCreationBillingPage = function(request, reply) {
     return request.saveNotifications([
       Promise.reject(err.message)
     ]).then(function(token) {
-      var url = '/org/transfer';
+      var url = '/org/transfer-user-name';
       var param = token ? "?notice=" + token : "";
       param = param + "&orgScope=" + request.query.orgScope;
       url = url + param;
