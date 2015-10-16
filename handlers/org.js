@@ -378,6 +378,27 @@ exports.getOrgCreationBillingPage = function(request, reply) {
 
   });
 
+};
 
+exports.getTransferPage = function(request, reply) {
+  if (!request.features.org_billing) {
+    return reply.redirect('/org');
+  }
 
+  if (invalidUserName(request.query.orgScope)) {
+    var err = new Error("Org Scope must be a valid entry");
+    request.logger.error(err);
+    return request.saveNotifications([
+      Promise.reject(err.message)
+    ]).then(function(token) {
+      var url = '/org/create';
+      var param = token ? "?notice=" + token : "";
+      url = url + param;
+      return reply.redirect(url);
+    });
+  }
+  return reply.view('org/transfer', {
+    fullname: request.query.fullname,
+    orgScope: request.query.orgScope
+  });
 };
