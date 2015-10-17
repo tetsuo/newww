@@ -98,6 +98,7 @@
     "steeltoe": "^1.0.1",
     "stripe": "^2.9.0",
     "stylus": "^0.45.1",
+    "timeparse": "^1.0.0",
     "tipsy-browserify": "^1.0.0",
     "token-facilitator": "^2.2.0",
     "truncate": "^1.0.4",

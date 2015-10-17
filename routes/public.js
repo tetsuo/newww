@@ -4,6 +4,7 @@ var _ = require('lodash');
 var async = require('async');
 var validatePackageName = require('validate-npm-package-name');
 var invalidUserName = require('npm-user-validate').username;
+var parseTime = require('timeparse');
 
 var unathenticatedRouteConfig = {
   config: {
@@ -44,7 +45,7 @@ var publicRoutes = [
     },
     config: {
       cache: {
-        expiresIn: 7 * 24 * 60 * 60 * 1000
+        expiresIn: parseTime('1w')
       }
     }
   }, {
